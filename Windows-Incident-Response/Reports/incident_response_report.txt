@@ -1,0 +1,192 @@
+WINDOWS INCIDENT RESPONSE REPORT
+
+Project: Windows Incident Response Investigation
+Analyst: Mamello Pita
+Date: 8 October 2026
+
+1. OBJECTIVE
+
+The objective of this investigation is to collect and document
+basic Windows system evidence that could assist with the
+investigation of a potential security incident.
+
+2. SYSTEM INFORMATION
+
+Operating System:
+
+Windows Version:
+
+OS Build:
+
+Computer Name:
+
+Evidence File:
+system_information.png
+
+3. RUNNING PROCESSES
+
+PowerShell was used to identify currently running processes
+and review processes with higher CPU usage.
+
+Command Used:
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 15 Name, Id, CPU
+
+Evidence File:
+running_processes.png
+
+Observations:
+
+
+4. NETWORK CONNECTIONS
+
+PowerShell was used to identify established TCP connections
+on the Windows system.
+
+Command Used:
+Get-NetTCPConnection | Where-Object State -eq "Established"
+
+Evidence File:
+network_connections.png
+
+Observations:
+
+The process review identified several expected Windows and
+Microsoft Edge processes, including msedge, msedgewebview2
+and explorer. SynTPEnh was also observed and is associated
+with Synaptics hardware software.
+
+PlariumPlay was identified as a third-party gaming application.
+The presence of this process alone does not indicate malicious
+activity, but unfamiliar third-party software should be verified
+during a security investigation.
+
+No process was classified as definitively malicious based on
+the process list alone.
+
+
+The network connection review identified a connection between
+127.0.0.1 and 127.0.0.1 on ports 52211 and 52210.
+
+The connection was owned by the 3CXSoftphone process (PID 2196).
+Because 127.0.0.1 is the local loopback address, the connection
+appears to be internal to the Windows system rather than a direct
+external connection.
+
+No malicious activity was identified from this connection alone.
+Further investigation would be required if other suspicious
+indicators were identified.
+
+5. STARTUP PROGRAMS
+
+Windows startup entries were reviewed to identify programs
+configured to start automatically.
+
+Command Used:
+Get-CimInstance Win32_StartupCommand
+
+Evidence File:
+startup_programs.png
+
+Observations:
+
+The startup review identified several expected applications,
+including Five9 Softphone Service, WhatsApp Web, Docker Desktop,
+PlariumPlay, Microsoft Teams, Microsoft Edge and Avast Browser.
+
+Windows Security was also present as SecurityHealthSystray.exe,
+which is an expected Windows security component.
+
+AnyDesk was identified as a startup application. AnyDesk is a
+legitimate remote-access application, but remote-access software
+should be verified during an incident investigation because
+legitimate remote-access tools can potentially be abused by
+attackers.
+
+No startup entry was classified as confirmed malicious based on
+the startup list alone.
+
+6. EVIDENCE COLLECTION
+
+The investigation collected system information, running process
+data, established network connections and startup program data.
+
+7. RISK ASSESSMENT
+
+Risk Level:
+
+Reason:
+
+
+8. RECOMMENDATIONS
+
+- Review unusual processes before taking action.
+- Investigate unknown network connections.
+- Review unfamiliar startup entries.
+- Preserve evidence before making system changes.
+- Escalate confirmed suspicious activity according to incident
+  response procedures.
+
+9. CONCLUSION
+
+This investigation provided practical experience in collecting
+and documenting Windows security evidence using PowerShell.
+The collected information can be used as a starting point for
+further incident investigation and analysis.
+
+10. Incident Timeline Analysis
+
+A review of the recent Windows System Event Log was conducted to establish a basic timeline of system activity. The collected events included timestamps, event IDs, severity levels and the Windows components responsible for generating the events.
+
+The event timeline was reviewed for unusual or potentially suspicious activity. Based on the available System Event Log data, no single event was identified as definitive evidence of a security compromise.
+
+The timeline provides supporting evidence for the investigation and can be correlated with process activity, network connections and startup programs if additional suspicious indicators are identified.
+
+Evidence collected:
+
+* system_event_timeline.txt
+* system_event_timeline.png
+
+Assessment:
+The available event-log information did not provide sufficient evidence to classify the system as compromised. Further investigation would be required if suspicious processes, network connections, authentication events or other indicators were identified.
+
+11. Windows Defender Event Analysis
+
+Windows Defender operational events were reviewed as part of the incident-response investigation. The collected evidence included event timestamps, event IDs, severity levels, provider information and event messages.
+
+The Defender event data was reviewed for indications of malware detection, security warnings or other potentially suspicious activity. The available events did not provide sufficient evidence to confirm a malware infection or security compromise.
+
+The Defender event log was retained as supporting evidence and can be correlated with process, network, startup and System Event Log information during further investigation.
+
+Evidence collected:
+
+* defender_event_analysis.txt
+* defender_event_analysis.png
+
+Assessment:
+No confirmed malicious activity was identified from the available Windows Defender events alone. Additional investigation would be required if future alerts or suspicious indicators are detected.
+
+12. Final Incident Assessment
+
+The Windows incident-response investigation examined system information, running processes, network connections, startup applications, Windows System Event Logs and Windows Defender operational events.
+
+The investigation identified several legitimate applications and services operating on the system. These included Microsoft Edge, Windows Explorer, Synaptics software, Microsoft Teams, Docker Desktop, WhatsApp Web, Five9 Softphone Service and Windows Security components.
+
+A 3CXSoftphone process was associated with a local loopback connection between 127.0.0.1 ports 52211 and 52210. Because the connection remained within the local system, it was not considered suspicious based on the available evidence.
+
+AnyDesk was identified as a startup application. Although AnyDesk is legitimate remote-access software, its presence should be verified during a security investigation because remote-access tools can potentially be abused.
+
+No process, network connection, startup application or security event was identified as confirmed malicious based on the evidence collected.
+
+Overall Risk Assessment:
+LOW — No confirmed indicators of compromise were identified during this investigation.
+
+Recommended Actions:
+
+* Continue monitoring system activity for unusual processes or connections.
+* Keep Windows and security software updated.
+* Review remote-access applications such as AnyDesk and disable them if they are not required.
+* Investigate future Windows Defender alerts promptly.
+* Correlate multiple indicators before determining that a system has been compromised.
+
+Conclusion:
+The investigation did not identify sufficient evidence to confirm that the Windows system was compromised. The collected evidence demonstrates a structured incident-response process involving system reconnaissance, process analysis, network analysis, startup analysis, event-log review and security-event investigation.
